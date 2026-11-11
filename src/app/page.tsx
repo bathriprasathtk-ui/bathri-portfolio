@@ -2,706 +2,478 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import {
   ArrowDown,
   ArrowUpRight,
-  Check,
-  ChevronRight,
+  Atom,
+  Cpu,
+  Database,
   Mail,
   Menu,
   X,
+  Shield,
+  Terminal,
+  Zap,
 } from "lucide-react";
-import { motion, type Variants } from "framer-motion";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
-const gold = "#D6AD58";
 
-const skills = [
-  { name: "Next.js", type: "FRAMEWORK" },
-  { name: "React", type: "FRONTEND" },
-  { name: "TypeScript", type: "LANGUAGE" },
-  { name: "JavaScript", type: "LANGUAGE" },
-  { name: "Tailwind CSS", type: "UI" },
-  { name: "Supabase", type: "BACKEND" },
-  { name: "Python", type: "LANGUAGE" },
-  { name: "C++", type: "LANGUAGE" },
-  { name: "SQL", type: "DATABASE" },
-  { name: "Git / GitHub", type: "TOOLS" },
-  { name: "AI Systems", type: "AI" },
-  { name: "REST APIs", type: "BACKEND" },
-];
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
 const projects = [
   {
-    number: "01",
-    title: "Atlas Enterprise OS",
-    category: "AI · ENTERPRISE SYSTEMS",
+    id: "01",
+    name: "ATLAS",
+    subtitle: "ENTERPRISE INTELLIGENCE",
     description:
-      "A next-generation enterprise operating system built around organizational memory. Atlas brings knowledge, semantic search, workflow automation, and intelligent agents into one connected workspace.",
+      "An AI-powered enterprise operating system built around organizational memory, semantic search, intelligent agents and workflow automation.",
     stack: ["Next.js", "TypeScript", "Supabase", "AI"],
     status: "IN DEVELOPMENT",
-    featured: true,
+    icon: Cpu,
+    accent: "cyan",
     url: "https://github.com/bathriprasathtk-ui/atlas-enterprise-os",
   },
   {
-    number: "02",
-    title: "BizWise AI",
-    category: "AI · BUSINESS INTELLIGENCE",
+    id: "02",
+    name: "RAG ROUTER",
+    subtitle: "SEMANTIC CACHING ENGINE",
     description:
-      "An AI-powered business intelligence platform focused on helping businesses turn information into clearer insights, smarter decisions, and practical next steps.",
-    stack: ["Next.js", "TypeScript", "AI", "Supabase"],
+      "A local-first RAG service that combines semantic caching, vector retrieval and query difficulty scoring to reduce unnecessary model calls.",
+    stack: ["Python", "Qdrant", "RAG", "Gemini API"],
+    status: "DEPLOYED",
+    icon: Database,
+    accent: "violet",
+    url: "",
+  },
+  {
+    id: "03",
+    name: "BIZWISE AI",
+    subtitle: "BUSINESS DECISION SYSTEM",
+    description:
+      "An AI business advisor that analyses revenue, expenses and customer metrics to generate practical recommendations for small businesses.",
+    stack: ["AI", "Python", "Business Analytics"],
     status: "PROJECT",
-    featured: false,
+    icon: Terminal,
+    accent: "gold",
     url: "",
   },
 ];
 
+const skills = [
+  "React", "Next.js", "TypeScript", "JavaScript",
+  "Python", "Java", "C++", "Tailwind CSS",
+  "Supabase", "SQL", "Git", "AI Systems",
+  "RAG", "REST APIs", "Qdrant", "Node.js",
+];
+
 const certificates = [
-  {
-    number: "01",
-    provider: "AWS",
-    title: "AWS Foundations",
-    subtitle: "Getting Started with the AWS Cloud Essentials",
-    date: "SEPTEMBER 10, 2026",
-    file: "/certificates/AWS.pdf",
-  },
-  {
-    number: "02",
-    provider: "GOOGLE",
-    title: "Introduction to Generative AI Studio",
-    subtitle: "Generative AI",
-    date: "SEPTEMBER 10, 2026",
-    file: "/certificates/google.pdf",
-  },
-  {
-    number: "03",
-    provider: "HP LIFE",
-    title: "Strategic Planning in the AI Age",
-    subtitle: "AI-driven strategic planning",
-    date: "SEPTEMBER 10, 2026",
-    file: "/certificates/strategic.pdf",
-  },
-  {
-    number: "04",
-    provider: "FREEACADEMY.AI",
-    title: "First AI Agent Python",
-    subtitle: "7 lessons · Final exam passed",
-    date: "SEPTEMBER 9, 2026",
-    file: "/certificates/ai-agent.pdf",
-  },
-  {
-    number: "05",
-    provider: "AUTONEXA AI",
-    title: "How AI Systems Are Built",
-    subtitle: "Hardware, Models & Training · Score 10/10",
-    date: "SEPTEMBER 9, 2026",
-    file: "/certificates/autonexa.pdf",
-  },
-  {
-    number: "06",
-    provider: "BOARD INFINITY",
-    title: "Data Science for Beginners",
-    subtitle: "Foundational data science course",
-    date: "SEPTEMBER 8, 2026",
-    file: "/certificates/Data-Science-Beginners.pdf",
-  },
+  "AWS Foundations",
+  "Google Introduction to Generative AI Studio",
+  "HP LIFE — Strategic Planning in the AI Age",
+  "First AI Agent with Python",
+  "How AI Systems Are Built",
+  "Data Science for Beginners",
 ];
 
-const technologies = [
-  { name: "REACT", angle: 0 },
-  { name: "PYTHON", angle: 60 },
-  { name: "AI", angle: 120 },
-  { name: "NEXT.JS", angle: 180 },
-  { name: "SQL", angle: 240 },
-  { name: "TYPESCRIPT", angle: 300 },
-];
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.75, ease: "easeOut" },
-  },
-};
-
-function SectionLabel({
-  number,
-  children,
-}: {
-  number: string;
-  children: React.ReactNode;
-}) {
+function Reactor() {
   return (
-    <p className="section-label">
-      <span>{number}</span>
-      <span className="label-line" />
-      {children}
-    </p>
+    <div className="reactor-wrap" aria-label="Animated reactor-inspired artwork">
+      <div className="reactor-aura" />
+      <div className="reactor-ring ring-one" />
+      <div className="reactor-ring ring-two" />
+      <div className="reactor-ring ring-three" />
+      <div className="reactor-core">
+        <div className="core-inner">
+          <Zap size={36} strokeWidth={1.2} />
+        </div>
+      </div>
+      <div className="reactor-orbit orbit-one" />
+      <div className="reactor-orbit orbit-two" />
+      <span className="reactor-label label-top">ARC / 01</span>
+      <span className="reactor-label label-bottom">POWER SYSTEM ONLINE</span>
+    </div>
   );
 }
 
-function Reveal({
-  children,
-  className = "",
+function SectionHeading({
+  eyebrow,
+  title,
+  number,
 }: {
-  children: React.ReactNode;
-  className?: string;
+  eyebrow: string;
+  title: string;
+  number: string;
 }) {
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.15 }}
-      variants={fadeUp}
-      className={className}
-    >
-      {children}
-    </motion.div>
+    <div className="section-heading">
+      <span className="section-number">{number} /</span>
+      <div>
+        <p className="eyebrow">{eyebrow}</p>
+        <h2>{title}</h2>
+      </div>
+    </div>
   );
 }
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeTech, setActiveTech] = useState("REACT");
+  const [activeSkill, setActiveSkill] = useState("AI Systems");
 
-  const navItems = ["About", "Skills", "Projects", "Education", "Contact"];
-
-  const closeMenu = () => setMenuOpen(false);
+  const navItems = [
+    ["ABOUT", "#about"],
+    ["SYSTEMS", "#systems"],
+    ["PROJECTS", "#projects"],
+    ["CONTACT", "#contact"],
+  ];
 
   return (
-    <main id="home" className="portfolio-shell">
-      {/* AMBIENT BACKGROUND */}
-      <div className="ambient-background" aria-hidden="true">
-        <div className="ambient-glow ambient-glow-one" />
-        <div className="ambient-glow ambient-glow-two" />
-        <div className="ambient-grid" />
-        <div className="ambient-grain" />
-      </div>
+    <main className="dark-intelligence">
+      <div className="ambient ambient-cyan" />
+      <div className="ambient ambient-violet" />
+      <div className="noise-overlay" />
 
-      {/* NAVIGATION */}
       <header className="site-header">
-        <nav className="nav-container">
-          <a href="#home" className="brand" onClick={closeMenu}>
-            <span className="brand-logo">
-              <Image
-                src="/logo.png"
-                alt="Bathri Prasath TK"
-                fill
-                priority
-                sizes="42px"
-                className="object-cover"
-              />
-            </span>
-            <span className="brand-copy">
-              <strong>BATHRI PRASATH TK</strong>
-              <small>DEVELOPER · BUILDER · CREATOR</small>
-            </span>
-          </a>
+        <a href="#home" className="brand">
+          <span className="brand-mark">B.</span>
+          <span>BATHRI<span className="brand-muted"> / TK</span></span>
+        </a>
 
-          <div className="desktop-nav">
-            {navItems.map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`}>
-                {item}
+        <nav className="desktop-nav">
+          {navItems.map(([label, href]) => (
+            <a key={label} href={href}>{label}</a>
+          ))}
+        </nav>
+
+        <a className="header-status" href="#contact">
+          <span className="status-dot" />
+          AVAILABLE FOR OPPORTUNITIES
+        </a>
+
+        <button
+          className="mobile-menu-button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle navigation"
+        >
+          {menuOpen ? <X /> : <Menu />}
+        </button>
+      </header>
+
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.nav
+            className="mobile-nav"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+          >
+            {navItems.map(([label, href]) => (
+              <a key={label} href={href} onClick={() => setMenuOpen(false)}>
+                {label}<ArrowUpRight size={16} />
               </a>
             ))}
-          </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
 
-          <div className="nav-right">
-            <span className="availability">
-              <span />
-              AVAILABLE
-            </span>
-            <a href="#contact" className="nav-cta">
-              LET&apos;S TALK <ArrowUpRight size={14} />
+      <section className="hero" id="home">
+        <div className="hero-copy">
+          <motion.div
+            className="hero-kicker"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+          >
+            <span className="kicker-line" />
+            ENGINEERING THE NEXT POSSIBILITY
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 35 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.1 }}
+          >
+            THINK
+            <span className="hero-outline">BEYOND.</span>
+            <span className="hero-name">BATHRI PRASATH TK</span>
+          </motion.h1>
+
+          <motion.p
+            className="hero-description"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
+            Developer. Builder. Technology enthusiast.
+            I create intelligent digital experiences at the intersection
+            of software engineering and artificial intelligence.
+          </motion.p>
+
+          <div className="hero-actions">
+            <a href="#projects" className="button-primary">
+              EXPLORE MY WORK <ArrowUpRight size={17} />
+            </a>
+            <a href="#about" className="button-ghost">
+              DISCOVER MY STORY <ArrowDown size={16} />
             </a>
           </div>
 
-          <button
-            className="mobile-menu-button"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle navigation"
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? <X /> : <Menu />}
-          </button>
-        </nav>
-
-        {menuOpen && (
-          <motion.div
-            className="mobile-nav"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            {navItems.map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                onClick={closeMenu}
-              >
-                {item} <ArrowUpRight size={15} />
-              </a>
-            ))}
-          </motion.div>
-        )}
-      </header>
-
-      {/* HERO */}
-      <section className="hero-section">
-        <div className="hero-inner">
-          <motion.div
-            className="hero-copy"
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-          >
-            <div className="hero-eyebrow">
-              <span className="eyebrow-dot" />
-              DESIGNING · BUILDING · EVOLVING
-            </div>
-
-            <p className="hero-role">
-              FULL-STACK DEVELOPER <span>·</span> AI ENTHUSIAST
-            </p>
-
-            <h1 className="hero-title">
-              BATHRI
-              <br />
-              <span>PRASATH</span>
-              <em>TK.</em>
-            </h1>
-
-            <div className="hero-description">
-              <span className="gold-rule" />
-              <div>
-                <p>
-                  I build digital experiences where thoughtful design meets
-                  intelligent technology.
-                </p>
-                <p className="muted-copy">
-                  A BSc IT student exploring full-stack development, AI systems,
-                  and the process of turning ambitious ideas into useful
-                  products.
-                </p>
-              </div>
-            </div>
-
-            <div className="hero-actions">
-              <a href="#projects" className="gold-button">
-                EXPLORE MY WORK <ArrowUpRight size={17} />
-              </a>
-              <a href="#contact" className="outline-button">
-                START A CONVERSATION
-              </a>
-            </div>
-
-            <div className="hero-socials">
-              <a
-                href="https://github.com/bathriprasathtk-ui"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <FaGithub size={15} /> GITHUB
-              </a>
-              <a
-                href="https://www.linkedin.com/in/bathri-prasath-tk-b41b73377/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <FaLinkedin size={15} /> LINKEDIN
-              </a>
-              <span>INDIA</span>
-            </div>
-          </motion.div>
-
-          {/* LIVING CENTERPIECE */}
-          <motion.div
-            className="core-stage"
-            initial={{ opacity: 0, scale: 0.88 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.2 }}
-          >
-            <div className="core-caption">
-              <span>01 — SIGNATURE OBJECT</span>
-              <span>BTK / DIGITAL IDENTITY</span>
-            </div>
-
-            <div className="golden-core">
-              <div className="core-halo halo-one" />
-              <div className="core-halo halo-two" />
-              <div className="core-halo halo-three" />
-
-              <div className="core-orbit orbit-one">
-                <span />
-              </div>
-              <div className="core-orbit orbit-two">
-                <span />
-              </div>
-              <div className="core-orbit orbit-three">
-                <span />
-              </div>
-
-              <div className="core-structure">
-                <div className="core-facet facet-one" />
-                <div className="core-facet facet-two" />
-                <div className="core-facet facet-three" />
-                <div className="core-center">
-                  <span>BTK</span>
-                  <small>EST. 2026</small>
-                </div>
-              </div>
-
-              <div className="core-sparks">
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <span
-                    key={i}
-                    style={{ "--spark-index": i } as React.CSSProperties}
-                  />
-                ))}
-              </div>
-
-              {technologies.map((tech) => (
-                <button
-                  key={tech.name}
-                  className={`tech-node ${
-                    activeTech === tech.name ? "active" : ""
-                  }`}
-                  style={{ "--node-angle": `${tech.angle}deg` } as React.CSSProperties}
-                  onClick={() => setActiveTech(tech.name)}
-                  aria-label={`Select ${tech.name}`}
-                  aria-pressed={activeTech === tech.name}
-                >
-                  <span>{tech.name}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="core-readout">
-              <div>
-                <span className="readout-label">CURRENT SIGNAL</span>
-                <strong>{activeTech}</strong>
-              </div>
-              <div className="signal-indicator">
-                <span />
-                SYSTEM ACTIVE
-              </div>
-            </div>
-
-            <p className="core-footnote">
-              A MIND IN CONSTANT CONSTRUCTION.
-            </p>
-          </motion.div>
-        </div>
-
-        <a href="#about" className="scroll-cue">
-          SCROLL TO EXPLORE <ArrowDown size={14} />
-        </a>
-        <span className="hero-index">01 / 07</span>
-      </section>
-
-      {/* ABOUT */}
-      <section id="about" className="content-section about-section">
-        <div className="section-grid">
-          <Reveal>
-            <SectionLabel number="01">THE PERSON</SectionLabel>
-            <h2 className="section-heading">
-              MORE THAN
-              <br />
-              <span>LINES OF CODE.</span>
-            </h2>
-          </Reveal>
-
-          <Reveal className="about-content">
-            <p className="large-statement">
-              I&apos;m learning how to turn an idea into something people can
-              actually use.
-            </p>
-            <p>
-              I&apos;m currently pursuing a BSc in Information Technology while
-              building my skills across frontend development, backend systems,
-              databases, and artificial intelligence.
-            </p>
-            <p>
-              What interests me most is the space between an idea and a
-              finished product — designing the interface, connecting the
-              systems, solving the problems, and continuously improving what I
-              build.
-            </p>
-
-            <div className="principles">
-              {["BUILD WITH PURPOSE", "LEARN BY BUILDING", "THINK SYSTEMS", "KEEP EVOLVING"].map(
-                (item, index) => (
-                  <span key={item}>
-                    <i>0{index + 1}</i> {item}
-                  </span>
-                )
-              )}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* SKILLS */}
-      <section id="skills" className="content-section skills-section">
-        <div className="section-topline">
-          <div>
-            <SectionLabel number="02">THE TOOLKIT</SectionLabel>
-            <h2 className="section-heading">
-              TECHNOLOGY
-              <br />
-              <span>IN MY HANDS.</span>
-            </h2>
+          <div className="hero-meta">
+            <span>BASED IN INDIA</span>
+            <span>FULL-STACK DEVELOPMENT</span>
+            <span>AI / SYSTEMS</span>
           </div>
-          <p className="section-aside">
-            A growing toolkit across modern frontend development, backend
-            systems, databases, programming, and AI.
-          </p>
         </div>
 
-        <div className="skills-constellation">
-          {skills.map((skill, index) => (
-            <motion.div
-              key={skill.name}
-              className="skill-piece"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.035 }}
-            >
-              <span className="skill-number">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <small>{skill.type}</small>
-                <strong>{skill.name}</strong>
-              </div>
-              <ArrowUpRight size={16} className="skill-arrow" />
-            </motion.div>
+        <motion.div
+          className="hero-visual"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2 }}
+        >
+          <Reactor />
+          <div className="visual-coordinate coordinate-one">
+            <span>CORE TEMP</span><strong>STABLE</strong>
+          </div>
+          <div className="visual-coordinate coordinate-two">
+            <span>ENERGY OUTPUT</span><strong>100%</strong>
+          </div>
+        </motion.div>
+
+        <div className="hero-index">
+          <span>01</span>
+          <span className="index-line" />
+          <span>INTRODUCTION</span>
+        </div>
+      </section>
+
+      <section className="ticker">
+        <div className="ticker-track">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div className="ticker-content" key={i}>
+              <span>BUILD</span><Zap size={16} />
+              <span>INVENT</span><Atom size={16} />
+              <span>ENGINEER</span><Zap size={16} />
+              <span>IMAGINE</span><Atom size={16} />
+              <span>BUILD</span><Zap size={16} />
+              <span>INVENT</span><Atom size={16} />
+            </div>
           ))}
         </div>
       </section>
 
-      {/* PROJECTS */}
-      <section id="projects" className="content-section projects-section">
-        <div className="section-topline">
-          <div>
-            <SectionLabel number="03">SELECTED WORK</SectionLabel>
-            <h2 className="section-heading">
-              IDEAS INTO
-              <br />
-              <span>WORKING SYSTEMS.</span>
-            </h2>
+      <section className="about section-shell" id="about">
+        <SectionHeading
+          number="01"
+          eyebrow="THE PERSON BEHIND THE SYSTEM"
+          title="Not here to follow. Here to build."
+        />
+
+        <div className="about-grid">
+          <div className="about-statement">
+            <p>
+              I believe technology should do more than work.
+              It should <span>change what is possible.</span>
+            </p>
           </div>
-          <p className="section-aside">
-            Projects shaping how I think about software, AI, interfaces, and
-            real-world problem solving.
-          </p>
+          <div className="about-detail">
+            <p>
+              I'm Bathri Prasath TK, an Information Technology student
+              passionate about full-stack development, artificial
+              intelligence and building useful products.
+            </p>
+            <p>
+              My focus is on turning ambitious ideas into practical
+              systems — from intelligent applications to AI-powered
+              platforms.
+            </p>
+            <div className="identity-line">
+              <span>IDENTITY</span>
+              <strong>BUILDER OF DIGITAL SYSTEMS</strong>
+            </div>
+            <div className="identity-line">
+              <span>EDUCATION</span>
+              <strong>B.SC INFORMATION TECHNOLOGY</strong>
+            </div>
+            <div className="identity-line">
+              <span>INSTITUTION</span>
+              <strong>KPR COLLEGE OF ARTS SCIENCE AND RESEARCH</strong>
+            </div>
+          </div>
         </div>
+      </section>
+
+      <section className="systems section-shell" id="systems">
+        <SectionHeading
+          number="02"
+          eyebrow="THE TECHNOLOGY UNIVERSE"
+          title="Tools are my instruments."
+        />
+
+        <div className="systems-layout">
+          <div className="systems-intro">
+            <span className="system-icon"><Cpu size={26} /></span>
+            <p>THE ENGINEERING STACK</p>
+            <h3>Explore the technologies behind my work.</h3>
+            <span className="systems-hint">SELECT A TECHNOLOGY TO INSPECT</span>
+          </div>
+
+          <div className="skill-universe">
+            {skills.map((skill, index) => (
+              <button
+                key={skill}
+                className={`skill-node ${activeSkill === skill ? "active" : ""}`}
+                style={{ "--i": index } as React.CSSProperties}
+                onClick={() => setActiveSkill(skill)}
+              >
+                <span className="skill-node-dot" />
+                {skill}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="selected-skill">
+          <span>SELECTED MODULE</span>
+          <strong>{activeSkill}</strong>
+          <span className="module-status">● MODULE IDENTIFIED</span>
+        </div>
+      </section>
+
+      <section className="projects section-shell" id="projects">
+        <SectionHeading
+          number="03"
+          eyebrow="SELECTED ENGINEERING WORK"
+          title="Ideas turned into systems."
+        />
 
         <div className="project-list">
-          {projects.map((project) => (
-            <motion.article
-              key={project.number}
-              className={`project-piece ${
-                project.featured ? "featured-project" : ""
-              }`}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.7 }}
-            >
-              <div className="project-visual">
-                <div className="project-visual-top">
-                  <span>BTK / PROJECT {project.number}</span>
-                  <span>{project.status}</span>
-                </div>
-                <div className="project-art">
-                  <div className="project-art-ring ring-a" />
-                  <div className="project-art-ring ring-b" />
-                  <div className="project-art-ring ring-c" />
-                  <div className="project-art-core">
-                    <span>{project.number}</span>
-                  </div>
-                  <div className="project-art-label">
-                    {project.featured ? "ATLAS / MEMORY ENGINE" : "BIZWISE / INSIGHTS"}
-                  </div>
-                </div>
-                <div className="project-visual-bottom">
-                  <span>DESIGN / ENGINEERING / IDEAS</span>
-                  <span>0{project.number}</span>
-                </div>
-              </div>
-
-              <div className="project-details">
-                <div className="project-meta">
-                  <span>{project.number}</span>
-                  <span>{project.category}</span>
-                </div>
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                <div className="project-stack">
-                  {project.stack.map((tech) => (
-                    <span key={tech}>{tech}</span>
-                  ))}
-                </div>
-                {project.url ? (
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="project-link"
-                  >
-                    EXPLORE PROJECT <ArrowUpRight size={17} />
-                  </a>
-                ) : (
-                  <span className="project-link project-link-muted">
-                    PROJECT DETAILS COMING SOON
+          {projects.map((project) => {
+            const Icon = project.icon;
+            return (
+              <motion.article
+                className={`project-card project-${project.accent}`}
+                key={project.id}
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div className="project-topline">
+                  <span>PROJECT / {project.id}</span>
+                  <span className="project-status">
+                    <span className="status-dot" /> {project.status}
                   </span>
-                )}
-              </div>
-            </motion.article>
-          ))}
+                </div>
+
+                <div className="project-body">
+                  <div className="project-art">
+                    <div className="project-art-grid" />
+                    <div className="project-art-ring">
+                      <Icon size={46} strokeWidth={1} />
+                    </div>
+                    <span className="art-code">SYSTEM_{project.id}</span>
+                  </div>
+
+                  <div className="project-info">
+                    <p className="eyebrow">{project.subtitle}</p>
+                    <h3>{project.name}</h3>
+                    <p className="project-description">{project.description}</p>
+                    <div className="project-tags">
+                      {project.stack.map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
+                    {project.url ? (
+                      <a href={project.url} target="_blank" rel="noreferrer" className="project-link">
+                        EXPLORE PROJECT <ArrowUpRight size={17} />
+                      </a>
+                    ) : (
+                      <span className="project-link project-private">
+                        PROJECT DETAILS AVAILABLE ON REQUEST
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
       </section>
 
-      {/* EDUCATION */}
-      <section id="education" className="content-section education-section">
-        <div className="section-grid">
-          <Reveal>
-            <SectionLabel number="04">EDUCATION</SectionLabel>
-            <h2 className="section-heading">
-              LEARNING
-              <br />
-              <span>IN MOTION.</span>
-            </h2>
-          </Reveal>
+      <section className="education section-shell" id="education">
+        <SectionHeading
+          number="04"
+          eyebrow="THE FOUNDATION"
+          title="Learning is part of the mission."
+        />
 
-          <Reveal className="education-card">
-            <div className="education-year">2025 — 2028</div>
-            <h3>BSc Information Technology</h3>
-            <p className="education-college">
-              KPR College of Arts Science and Research
-            </p>
-            <p className="education-description">
-              Studying the fundamentals of software development, databases,
-              programming, algorithms, and information technology while
-              building practical experience through personal projects and
-              modern development technologies.
-            </p>
-            <div className="education-focus">
-              {["SOFTWARE", "SYSTEMS", "AI"].map((item) => (
-                <span key={item}>
-                  <Check size={14} /> {item}
-                </span>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* CERTIFICATIONS */}
-      <section className="content-section certification-section">
-        <div className="section-topline">
+        <div className="education-card">
+          <div className="education-year">2025 — 2028</div>
           <div>
-            <SectionLabel number="05">CERTIFICATIONS</SectionLabel>
-            <h2 className="section-heading">
-              LEARNING,
-              <br />
-              <span>DOCUMENTED.</span>
-            </h2>
+            <span className="eyebrow">UNDERGRADUATE EDUCATION</span>
+            <h3>B.Sc Information Technology</h3>
+            <p>KPR College of Arts Science and Research</p>
           </div>
-          <p className="section-aside">
-            Learning milestones across cloud computing, artificial
-            intelligence, Python, data science, and strategic thinking.
-          </p>
+          <div className="education-score">
+            <span>CGPA</span>
+            <strong>8.52</strong>
+          </div>
         </div>
+      </section>
+
+      <section className="certificates section-shell" id="certificates">
+        <SectionHeading
+          number="05"
+          eyebrow="ACHIEVEMENTS & LEARNING"
+          title="Knowledge collected. Skills developed."
+        />
 
         <div className="certificate-grid">
           {certificates.map((certificate, index) => (
-            <motion.a
-              key={certificate.number}
-              href={certificate.file}
-              target="_blank"
-              rel="noreferrer"
-              className="certificate-piece"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.045 }}
-            >
-              <div className="certificate-top">
-                <span>{certificate.number}</span>
-                <ArrowUpRight size={18} />
-              </div>
-              <div className="certificate-content">
-                <small>{certificate.provider}</small>
-                <h3>{certificate.title}</h3>
-                <p>{certificate.subtitle}</p>
-              </div>
-              <div className="certificate-bottom">
-                <span>{certificate.date}</span>
-                <span>VIEW ↗</span>
-              </div>
-            </motion.a>
+            <div className="certificate-item" key={certificate}>
+              <span className="certificate-number">0{index + 1}</span>
+              <Shield size={20} />
+              <strong>{certificate}</strong>
+              <span className="certificate-arrow"><ArrowUpRight size={16} /></span>
+            </div>
           ))}
         </div>
         <p className="certificate-note">
-          <span /> SELECT A CERTIFICATE TO VIEW THE ORIGINAL DOCUMENT
+          CERTIFICATE FILES CAN BE CONNECTED TO EACH ITEM WHEN VERIFIED.
         </p>
       </section>
 
-      {/* CONTACT */}
-      <section id="contact" className="contact-section">
-        <div className="contact-ambient" />
-        <Reveal className="contact-inner">
-          <SectionLabel number="06">THE NEXT CHAPTER</SectionLabel>
-          <p className="contact-pretitle">HAVE SOMETHING IN MIND?</p>
-          <h2>
-            LET&apos;S MAKE
-            <br />
-            <span>IT REAL.</span>
-          </h2>
-          <p className="contact-description">
-            Whether it&apos;s a project, collaboration, opportunity, or just a
-            conversation about technology — I&apos;d be happy to hear from you.
-          </p>
-          <a
-            href="mailto:bathriprasathtk@gmail.com"
-            className="contact-button"
-          >
-            <Mail size={18} />
-            bathriprasathtk@gmail.com
-            <ArrowUpRight size={18} />
+      <section className="contact section-shell" id="contact">
+        <div className="contact-overline">
+          <span className="status-dot" /> END OF TRANSMISSION? NOT YET.
+        </div>
+        <h2>
+          HAVE AN IDEA?
+          <span>LET'S BUILD IT.</span>
+        </h2>
+        <p>
+          Have a project, opportunity or interesting problem?
+          Let's connect and create something meaningful.
+        </p>
+
+        <a href="mailto:bathriprasathtk@gmail.com" className="contact-button">
+          INITIATE CONNECTION <ArrowUpRight size={19} />
+        </a>
+
+        <div className="contact-links">
+          <a href="https://github.com/bathriprasathtk-ui" target="_blank" rel="noreferrer">
+            <FaGithub size={18} /> GITHUB
           </a>
-        </Reveal>
+          <a href="https://www.linkedin.com/in/bathri-prasath-tk-b41b73377/" target="_blank" rel="noreferrer">
+            <FaLinkedin size={18} /> LINKEDIN
+          </a>
+          <a href="mailto:bathriprasathtk@gmail.com">
+            <Mail size={18} /> EMAIL
+          </a>
+        </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="site-footer">
-        <div className="footer-brand">
-          <strong>BTK<span>.</span></strong>
-          <small>BUILT WITH INTENTION.</small>
-        </div>
-        <p>© 2026 BATHRI PRASATH TK</p>
-        <div className="footer-links">
-          <a
-            href="https://github.com/bathriprasathtk-ui"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GITHUB
-          </a>
-          <a
-            href="https://www.linkedin.com/in/bathri-prasath-tk-b41b73377/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            LINKEDIN
-          </a>
-          <a href="#home">
-            BACK TO TOP <ChevronRight size={13} className="-rotate-90" />
-          </a>
-        </div>
+        <a href="#home" className="footer-brand">BATHRI<span> / TK</span></a>
+        <span>DESIGNED TO THINK DIFFERENTLY.</span>
+        <span>© 2026 BATHRI PRASATH TK</span>
       </footer>
     </main>
   );
