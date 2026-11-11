@@ -1,113 +1,179 @@
-
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties, type PointerEvent } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowDown,
+  ArrowDownRight,
   ArrowUpRight,
-  Atom,
+  AudioLines,
+  Binary,
+  ChevronDown,
+  Command,
   Cpu,
   Database,
+  ExternalLink,
+  Github,
+  Linkedin,
+  LockKeyhole,
   Mail,
   Menu,
-  X,
+  Orbit,
   Shield,
-  Terminal,
+  Sparkles,
+  X,
   Zap,
 } from "lucide-react";
 
-import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
-
 const projects = [
   {
-    id: "01",
-    name: "ATLAS",
-    subtitle: "ENTERPRISE INTELLIGENCE",
-    description:
-      "An AI-powered enterprise operating system built around organizational memory, semantic search, intelligent agents and workflow automation.",
-    stack: ["Next.js", "TypeScript", "Supabase", "AI"],
+    number: "01",
+    name: "Atlas Enterprise OS",
+    type: "ENTERPRISE INTELLIGENCE",
     status: "IN DEVELOPMENT",
-    icon: Cpu,
-    accent: "cyan",
-    url: "https://github.com/bathriprasathtk-ui/atlas-enterprise-os",
+    description:
+      "An AI-powered operating system for organizations — connecting institutional memory, semantic search, intelligent agents and automated workflows.",
+    stack: ["Next.js", "TypeScript", "Supabase", "AI"],
+    link: "https://github.com/bathriprasathtk-ui/atlas-enterprise-os",
+    mark: "AT",
   },
   {
-    id: "02",
-    name: "RAG ROUTER",
-    subtitle: "SEMANTIC CACHING ENGINE",
-    description:
-      "A local-first RAG service that combines semantic caching, vector retrieval and query difficulty scoring to reduce unnecessary model calls.",
-    stack: ["Python", "Qdrant", "RAG", "Gemini API"],
+    number: "02",
+    name: "Semantic RAG Router",
+    type: "MODEL ROUTING / COST INTELLIGENCE",
     status: "DEPLOYED",
-    icon: Database,
-    accent: "violet",
-    url: "",
+    description:
+      "A local-first retrieval system that checks semantic cache, retrieves relevant context and scores query difficulty before choosing whether a model call is needed.",
+    stack: ["Python", "Qdrant", "RAG", "Gemini API"],
+    link: "",
+    mark: "R/",
   },
   {
-    id: "03",
-    name: "BIZWISE AI",
-    subtitle: "BUSINESS DECISION SYSTEM",
-    description:
-      "An AI business advisor that analyses revenue, expenses and customer metrics to generate practical recommendations for small businesses.",
-    stack: ["AI", "Python", "Business Analytics"],
+    number: "03",
+    name: "BizWise AI",
+    type: "BUSINESS DECISION SYSTEM",
     status: "PROJECT",
-    icon: Terminal,
-    accent: "gold",
-    url: "",
+    description:
+      "An AI business decision assistant that turns revenue, expenses and customer metrics into practical insights and next-step recommendations.",
+    stack: ["AI", "Python", "Analytics"],
+    link: "",
+    mark: "BW",
   },
 ];
 
-const skills = [
-  "React", "Next.js", "TypeScript", "JavaScript",
-  "Python", "Java", "C++", "Tailwind CSS",
-  "Supabase", "SQL", "Git", "AI Systems",
-  "RAG", "REST APIs", "Qdrant", "Node.js",
+const skillGroups = [
+  { name: "INTERFACE", items: ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS"] },
+  { name: "ENGINEERING", items: ["Python", "Java", "C++", "Node.js", "REST APIs"] },
+  { name: "INTELLIGENCE", items: ["RAG", "Qdrant", "Gemini API", "AI Systems", "Semantic Search"] },
+  { name: "INFRASTRUCTURE", items: ["Supabase", "SQL", "Git / GitHub", "Docker", "CI / CD"] },
 ];
 
-const certificates = [
-  "AWS Foundations",
-  "Google Introduction to Generative AI Studio",
-  "HP LIFE — Strategic Planning in the AI Age",
-  "First AI Agent with Python",
-  "How AI Systems Are Built",
-  "Data Science for Beginners",
+const awards = [
+  { title: "AWS Foundations", file: "/certificates/AWS.pdf", issuer: "AMAZON WEB SERVICES" },
+  { title: "Introduction to Generative AI Studio", file: "/certificates/google.pdf", issuer: "GOOGLE" },
+  { title: "Strategic Planning in the AI Age", file: "/certificates/strategic.pdf", issuer: "HP LIFE" },
+  { title: "First AI Agent with Python", file: "/certificates/ai-agent.pdf", issuer: "FREE ACADEMY" },
+  { title: "How AI Systems Are Built", file: "/certificates/autonexa.pdf", issuer: "AUTONEXA" },
+  { title: "Data Science for Beginners", file: "/certificates/Data-Science-Beginners.pdf", issuer: "BOARD INFINITY" },
 ];
 
-function Reactor() {
+function ReactorScene({
+  mode,
+  onModeChange,
+}: {
+  mode: "reactor" | "cave";
+  onModeChange: (mode: "reactor" | "cave") => void;
+}) {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  function handlePointerMove(event: PointerEvent<HTMLDivElement>) {
+    if (event.pointerType === "touch") return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ x: y * -8, y: x * 10 });
+  }
+
   return (
-    <div className="reactor-wrap" aria-label="Animated reactor-inspired artwork">
-      <div className="reactor-aura" />
-      <div className="reactor-ring ring-one" />
-      <div className="reactor-ring ring-two" />
-      <div className="reactor-ring ring-three" />
-      <div className="reactor-core">
-        <div className="core-inner">
-          <Zap size={36} strokeWidth={1.2} />
-        </div>
+    <div className="scene-shell">
+      <div className="scene-topline">
+        <span><span className="live-dot" /> PRIVATE SYSTEM / ONLINE</span>
+        <span>SECTOR 07 — INDIA</span>
       </div>
-      <div className="reactor-orbit orbit-one" />
-      <div className="reactor-orbit orbit-two" />
-      <span className="reactor-label label-top">ARC / 01</span>
-      <span className="reactor-label label-bottom">POWER SYSTEM ONLINE</span>
+
+      <div
+        className={`hybrid-scene ${mode === "cave" ? "scene-cave" : "scene-reactor"}`}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={() => setTilt({ x: 0, y: 0 })}
+        style={{ "--tilt-x": `${tilt.x}deg`, "--tilt-y": `${tilt.y}deg` } as CSSProperties}
+      >
+        <div className="scene-grid" />
+        <div className="cave-architecture">
+          <div className="cave-wall wall-left" />
+          <div className="cave-wall wall-right" />
+          <div className="cave-ceiling" />
+          <div className="cave-floor" />
+          <div className="cave-monolith">
+            <span>WAYNE</span>
+            <small>RESEARCH DIVISION</small>
+          </div>
+          <div className="cave-console console-left"><i /><i /><i /><i /></div>
+          <div className="cave-console console-right"><i /><i /><i /></div>
+        </div>
+
+        <div className="reactor-object">
+          <div className="reactor-shadow" />
+          <div className="reactor-halo" />
+          <div className="reactor-disc disc-outer">
+            <div className="disc-ticks" />
+          </div>
+          <div className="reactor-disc disc-middle">
+            <div className="reactor-blades">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <span key={index} style={{ "--blade": index } as CSSProperties} />
+              ))}
+            </div>
+          </div>
+          <div className="reactor-disc disc-inner">
+            <div className="reactor-lens"><Zap size={28} strokeWidth={1.25} /></div>
+          </div>
+          <div className="reactor-core-label">BTK</div>
+        </div>
+
+        <div className="scene-readout readout-left">
+          <span>CORE SIGNATURE</span><strong>BTK / 001</strong>
+          <span className="readout-rule" />
+          <span>POWER STATE</span><strong className="readout-live">NOMINAL</strong>
+        </div>
+        <div className="scene-readout readout-right">
+          <span>TACTICAL NETWORK</span><strong>CONNECTED</strong>
+          <span className="readout-rule" />
+          <span>INTELLIGENCE</span><strong>ACTIVE</strong>
+        </div>
+        <div className="scene-crosshair crosshair-one" />
+        <div className="scene-crosshair crosshair-two" />
+      </div>
+
+      <div className="scene-controls">
+        <div className="scene-tabs" role="group" aria-label="Scene mode">
+          <button className={mode === "reactor" ? "selected" : ""} onClick={() => onModeChange("reactor")}>
+            <Orbit size={13} /> REACTOR
+          </button>
+          <button className={mode === "cave" ? "selected" : ""} onClick={() => onModeChange("cave")}>
+            <Command size={13} /> THE CAVE
+          </button>
+        </div>
+        <span className="scene-hint">MOVE POINTER TO INSPECT</span>
+      </div>
     </div>
   );
 }
 
-function SectionHeading({
-  eyebrow,
-  title,
-  number,
-}: {
-  eyebrow: string;
-  title: string;
-  number: string;
-}) {
+function SectionIntro({ index, eyebrow, title }: { index: string; eyebrow: string; title: string }) {
   return (
-    <div className="section-heading">
-      <span className="section-number">{number} /</span>
-      <div>
-        <p className="eyebrow">{eyebrow}</p>
+    <div className="section-intro">
+      <span className="section-index">{index}</span>
+      <div className="section-intro-copy">
+        <p className="micro-label">{eyebrow}</p>
         <h2>{title}</h2>
       </div>
     </div>
@@ -116,363 +182,196 @@ function SectionHeading({
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSkill, setActiveSkill] = useState("AI Systems");
+  const [sceneMode, setSceneMode] = useState<"reactor" | "cave">("reactor");
+  const [activeGroup, setActiveGroup] = useState(0);
+  const [expandedProject, setExpandedProject] = useState("01");
 
-  const navItems = [
-    ["ABOUT", "#about"],
-    ["SYSTEMS", "#systems"],
-    ["PROJECTS", "#projects"],
-    ["CONTACT", "#contact"],
+  const nav = [
+    ["PROFILE", "#profile"],
+    ["CAPABILITIES", "#capabilities"],
+    ["WORK", "#work"],
+    ["ARCHIVE", "#archive"],
   ];
 
   return (
-    <main className="dark-intelligence">
-      <div className="ambient ambient-cyan" />
-      <div className="ambient ambient-violet" />
-      <div className="noise-overlay" />
+    <main className="wayne-portfolio">
+      <div className="ambient-glow glow-top" />
+      <div className="ambient-glow glow-bottom" />
 
-      <header className="site-header">
-        <a href="#home" className="brand">
-          <span className="brand-mark">B.</span>
-          <span>BATHRI<span className="brand-muted"> / TK</span></span>
+      <header className="wayne-header">
+        <a href="#top" className="wordmark" aria-label="Bathri home">
+          <span className="wordmark-emblem">B<span>.</span></span>
+          <span className="wordmark-name">BATHRI PRASATH <i>TK</i></span>
         </a>
 
-        <nav className="desktop-nav">
-          {navItems.map(([label, href]) => (
-            <a key={label} href={href}>{label}</a>
-          ))}
+        <nav className="main-nav" aria-label="Main navigation">
+          {nav.map(([label, href]) => <a href={href} key={label}>{label}</a>)}
         </nav>
 
-        <a className="header-status" href="#contact">
-          <span className="status-dot" />
-          AVAILABLE FOR OPPORTUNITIES
+        <a className="header-contact" href="mailto:bathriprasathtk@gmail.com">
+          LET'S CONNECT <ArrowUpRight size={14} />
         </a>
 
-        <button
-          className="mobile-menu-button"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle navigation"
-        >
+        <button className="nav-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>
           {menuOpen ? <X /> : <Menu />}
         </button>
       </header>
 
       <AnimatePresence>
         {menuOpen && (
-          <motion.nav
-            className="mobile-nav"
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-          >
-            {navItems.map(([label, href]) => (
-              <a key={label} href={href} onClick={() => setMenuOpen(false)}>
-                {label}<ArrowUpRight size={16} />
-              </a>
+          <motion.nav className="mobile-drawer" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}>
+            {nav.map(([label, href]) => (
+              <a href={href} key={label} onClick={() => setMenuOpen(false)}>{label}<ArrowUpRight size={16} /></a>
             ))}
+            <a href="mailto:bathriprasathtk@gmail.com" onClick={() => setMenuOpen(false)}>CONTACT <Mail size={16} /></a>
           </motion.nav>
         )}
       </AnimatePresence>
 
-      <section className="hero" id="home">
-        <div className="hero-copy">
-          <motion.div
-            className="hero-kicker"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
-            <span className="kicker-line" />
-            ENGINEERING THE NEXT POSSIBILITY
+      <section className="opening" id="top">
+        <div className="opening-copy">
+          <motion.div className="availability" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .3 }}>
+            <span className="live-dot" /> INDEPENDENT MIND. CONTINUOUSLY BUILDING.
           </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 35 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.1 }}
-          >
-            THINK
-            <span className="hero-outline">BEYOND.</span>
-            <span className="hero-name">BATHRI PRASATH TK</span>
-          </motion.h1>
-
-          <motion.p
-            className="hero-description"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            Developer. Builder. Technology enthusiast.
-            I create intelligent digital experiences at the intersection
-            of software engineering and artificial intelligence.
+          <motion.p className="opening-pretitle" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .4 }}>
+            SOFTWARE ENGINEERING <span>—</span> APPLIED INTELLIGENCE
           </motion.p>
-
-          <div className="hero-actions">
-            <a href="#projects" className="button-primary">
-              EXPLORE MY WORK <ArrowUpRight size={17} />
-            </a>
-            <a href="#about" className="button-ghost">
-              DISCOVER MY STORY <ArrowDown size={16} />
-            </a>
-          </div>
-
-          <div className="hero-meta">
-            <span>BASED IN INDIA</span>
-            <span>FULL-STACK DEVELOPMENT</span>
-            <span>AI / SYSTEMS</span>
-          </div>
+          <motion.h1 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8, delay: .15 }}>
+            Quietly<br /><span>building</span><br />what's next<span className="title-period">.</span>
+          </motion.h1>
+          <motion.p className="opening-description" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .7 }}>
+            I'm Bathri — an IT student and developer exploring the space between thoughtful software, intelligent systems and useful products.
+          </motion.p>
+          <motion.div className="opening-actions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .9 }}>
+            <a href="#work" className="primary-link">EXPLORE SELECTED WORK <ArrowDownRight size={16} /></a>
+            <a href="#profile" className="secondary-link">A LITTLE ABOUT ME</a>
+          </motion.div>
+          <div className="opening-footnote"><span>01 / 04</span><span>PERSONAL TECHNOLOGY OFFICE</span></div>
         </div>
 
-        <motion.div
-          className="hero-visual"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2 }}
-        >
-          <Reactor />
-          <div className="visual-coordinate coordinate-one">
-            <span>CORE TEMP</span><strong>STABLE</strong>
-          </div>
-          <div className="visual-coordinate coordinate-two">
-            <span>ENERGY OUTPUT</span><strong>100%</strong>
-          </div>
+        <motion.div className="opening-visual" initial={{ opacity: 0, scale: .96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: .25 }}>
+          <ReactorScene mode={sceneMode} onModeChange={setSceneMode} />
         </motion.div>
-
-        <div className="hero-index">
-          <span>01</span>
-          <span className="index-line" />
-          <span>INTRODUCTION</span>
-        </div>
+        <div className="vertical-note">DESIGNING WITH INTENT <span>·</span> BUILDING WITH PURPOSE</div>
       </section>
 
-      <section className="ticker">
-        <div className="ticker-track">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <div className="ticker-content" key={i}>
-              <span>BUILD</span><Zap size={16} />
-              <span>INVENT</span><Atom size={16} />
-              <span>ENGINEER</span><Zap size={16} />
-              <span>IMAGINE</span><Atom size={16} />
-              <span>BUILD</span><Zap size={16} />
-              <span>INVENT</span><Atom size={16} />
-            </div>
-          ))}
-        </div>
-      </section>
+      <div className="manifesto-strip">
+        <span>LESS NOISE.</span><span className="manifesto-line" /><span>MORE INTENTION.</span><span className="manifesto-line" /><span>BETTER SYSTEMS.</span>
+      </div>
 
-      <section className="about section-shell" id="about">
-        <SectionHeading
-          number="01"
-          eyebrow="THE PERSON BEHIND THE SYSTEM"
-          title="Not here to follow. Here to build."
-        />
-
-        <div className="about-grid">
-          <div className="about-statement">
-            <p>
-              I believe technology should do more than work.
-              It should <span>change what is possible.</span>
-            </p>
+      <section className="profile section-wrap" id="profile">
+        <SectionIntro index="01" eyebrow="PERSONAL DOSSIER / OPEN FILE" title="A mind for systems. A bias for making." />
+        <div className="profile-grid">
+          <div className="profile-lead">
+            <span className="dossier-stamp"><Shield size={14} /> PERSONAL FILE / 001</span>
+            <p>Curiosity is the starting point. <em>Building is the answer.</em></p>
           </div>
-          <div className="about-detail">
-            <p>
-              I'm Bathri Prasath TK, an Information Technology student
-              passionate about full-stack development, artificial
-              intelligence and building useful products.
-            </p>
-            <p>
-              My focus is on turning ambitious ideas into practical
-              systems — from intelligent applications to AI-powered
-              platforms.
-            </p>
-            <div className="identity-line">
-              <span>IDENTITY</span>
-              <strong>BUILDER OF DIGITAL SYSTEMS</strong>
-            </div>
-            <div className="identity-line">
-              <span>EDUCATION</span>
-              <strong>B.SC INFORMATION TECHNOLOGY</strong>
-            </div>
-            <div className="identity-line">
-              <span>INSTITUTION</span>
-              <strong>KPR COLLEGE OF ARTS SCIENCE AND RESEARCH</strong>
+          <div className="profile-details">
+            <p>I'm Bathri Prasath TK, pursuing a B.Sc. in Information Technology at KPR College of Arts Science and Research.</p>
+            <p>I enjoy working across full-stack development and AI — understanding how products fit together, how data moves through systems, and how an idea becomes something people can actually use.</p>
+            <div className="dossier-facts">
+              <div><span>FOCUS</span><strong>FULL-STACK / AI SYSTEMS</strong></div>
+              <div><span>EDUCATION</span><strong>B.SC INFORMATION TECHNOLOGY</strong></div>
+              <div><span>LOCATION</span><strong>TAMIL NADU, INDIA</strong></div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="systems section-shell" id="systems">
-        <SectionHeading
-          number="02"
-          eyebrow="THE TECHNOLOGY UNIVERSE"
-          title="Tools are my instruments."
-        />
-
-        <div className="systems-layout">
-          <div className="systems-intro">
-            <span className="system-icon"><Cpu size={26} /></span>
-            <p>THE ENGINEERING STACK</p>
-            <h3>Explore the technologies behind my work.</h3>
-            <span className="systems-hint">SELECT A TECHNOLOGY TO INSPECT</span>
-          </div>
-
-          <div className="skill-universe">
-            {skills.map((skill, index) => (
-              <button
-                key={skill}
-                className={`skill-node ${activeSkill === skill ? "active" : ""}`}
-                style={{ "--i": index } as React.CSSProperties}
-                onClick={() => setActiveSkill(skill)}
-              >
-                <span className="skill-node-dot" />
-                {skill}
+      <section className="capabilities section-wrap" id="capabilities">
+        <SectionIntro index="02" eyebrow="CAPABILITY MATRIX / SELECT A DIVISION" title="A practical toolkit, built over time." />
+        <div className="capability-layout">
+          <div className="capability-selector" role="tablist" aria-label="Skill categories">
+            {skillGroups.map((group, index) => (
+              <button key={group.name} role="tab" aria-selected={activeGroup === index} className={activeGroup === index ? "active" : ""} onClick={() => setActiveGroup(index)}>
+                <span>0{index + 1}</span>{group.name}<ArrowUpRight size={15} />
               </button>
             ))}
           </div>
-        </div>
-
-        <div className="selected-skill">
-          <span>SELECTED MODULE</span>
-          <strong>{activeSkill}</strong>
-          <span className="module-status">● MODULE IDENTIFIED</span>
+          <div className="capability-panel" role="tabpanel">
+            <div className="panel-topline"><span>TECHNICAL DIVISION / 0{activeGroup + 1}</span><span><AudioLines size={14} /> SYSTEM READY</span></div>
+            <h3>{skillGroups[activeGroup].name.toLowerCase()}<span>_stack</span></h3>
+            <div className="capability-tags">
+              {skillGroups[activeGroup].items.map((item, index) => (
+                <motion.span key={item} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * .06 }}>{item}</motion.span>
+              ))}
+            </div>
+            <div className="panel-foot"><span>SELECTED KNOWLEDGE AREA</span><Binary size={17} /></div>
+          </div>
         </div>
       </section>
 
-      <section className="projects section-shell" id="projects">
-        <SectionHeading
-          number="03"
-          eyebrow="SELECTED ENGINEERING WORK"
-          title="Ideas turned into systems."
-        />
-
-        <div className="project-list">
+      <section className="work section-wrap" id="work">
+        <SectionIntro index="03" eyebrow="SELECTED WORK / ENGINEERING LOG" title="Built to solve something real." />
+        <div className="work-list">
           {projects.map((project) => {
-            const Icon = project.icon;
+            const open = expandedProject === project.number;
             return (
-              <motion.article
-                className={`project-card project-${project.accent}`}
-                key={project.id}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.25 }}
-              >
-                <div className="project-topline">
-                  <span>PROJECT / {project.id}</span>
-                  <span className="project-status">
-                    <span className="status-dot" /> {project.status}
-                  </span>
-                </div>
-
-                <div className="project-body">
-                  <div className="project-art">
-                    <div className="project-art-grid" />
-                    <div className="project-art-ring">
-                      <Icon size={46} strokeWidth={1} />
-                    </div>
-                    <span className="art-code">SYSTEM_{project.id}</span>
-                  </div>
-
-                  <div className="project-info">
-                    <p className="eyebrow">{project.subtitle}</p>
-                    <h3>{project.name}</h3>
-                    <p className="project-description">{project.description}</p>
-                    <div className="project-tags">
-                      {project.stack.map((tag) => (
-                        <span key={tag}>{tag}</span>
-                      ))}
-                    </div>
-                    {project.url ? (
-                      <a href={project.url} target="_blank" rel="noreferrer" className="project-link">
-                        EXPLORE PROJECT <ArrowUpRight size={17} />
-                      </a>
-                    ) : (
-                      <span className="project-link project-private">
-                        PROJECT DETAILS AVAILABLE ON REQUEST
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </motion.article>
+              <article className={`work-entry ${open ? "expanded" : ""}`} key={project.number}>
+                <button className="work-trigger" onClick={() => setExpandedProject(open ? "" : project.number)} aria-expanded={open}>
+                  <span className="work-number">{project.number}</span>
+                  <span className="work-title-wrap"><small>{project.type}</small><strong>{project.name}</strong></span>
+                  <span className="work-status">{project.status}</span>
+                  <span className="work-toggle"><ChevronDown size={18} /></span>
+                </button>
+                <AnimatePresence initial={false}>
+                  {open && (
+                    <motion.div className="work-details" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: .3 }}>
+                      <div className="work-monogram">{project.mark}</div>
+                      <div className="work-description">
+                        <p>{project.description}</p>
+                        <div className="work-tags">{project.stack.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                        {project.link ? <a href={project.link} target="_blank" rel="noreferrer" className="work-link">VIEW REPOSITORY <ExternalLink size={14} /></a> : <span className="work-link muted-link"><LockKeyhole size={13} /> DETAILS AVAILABLE ON REQUEST</span>}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </article>
             );
           })}
         </div>
       </section>
 
-      <section className="education section-shell" id="education">
-        <SectionHeading
-          number="04"
-          eyebrow="THE FOUNDATION"
-          title="Learning is part of the mission."
-        />
-
-        <div className="education-card">
-          <div className="education-year">2025 — 2028</div>
-          <div>
-            <span className="eyebrow">UNDERGRADUATE EDUCATION</span>
-            <h3>B.Sc Information Technology</h3>
-            <p>KPR College of Arts Science and Research</p>
-          </div>
-          <div className="education-score">
-            <span>CGPA</span>
-            <strong>8.52</strong>
-          </div>
+      <section className="education section-wrap" id="education">
+        <SectionIntro index="04" eyebrow="THE FOUNDATION / EDUCATION" title="Still learning. Always building." />
+        <div className="education-record">
+          <div className="education-date">2025 <span>—</span> 2028</div>
+          <div className="education-main"><span>UNDERGRADUATE DEGREE</span><h3>Bachelor of Science</h3><p>Information Technology · KPR College of Arts Science and Research</p></div>
+          <div className="education-grade"><span>CGPA</span><strong>8.52</strong></div>
         </div>
       </section>
 
-      <section className="certificates section-shell" id="certificates">
-        <SectionHeading
-          number="05"
-          eyebrow="ACHIEVEMENTS & LEARNING"
-          title="Knowledge collected. Skills developed."
-        />
-
-        <div className="certificate-grid">
-          {certificates.map((certificate, index) => (
-            <div className="certificate-item" key={certificate}>
-              <span className="certificate-number">0{index + 1}</span>
-              <Shield size={20} />
-              <strong>{certificate}</strong>
-              <span className="certificate-arrow"><ArrowUpRight size={16} /></span>
-            </div>
+      <section className="archive section-wrap" id="archive">
+        <SectionIntro index="05" eyebrow="LEARNING ARCHIVE / VERIFIED FILES" title="Proof of curiosity." />
+        <div className="archive-list">
+          {awards.map((award, index) => (
+            <a className="archive-row" href={award.file} target="_blank" rel="noreferrer" key={award.title}>
+              <span className="archive-index">0{index + 1}</span>
+              <span className="archive-name">{award.title}<small>{award.issuer}</small></span>
+              <span className="archive-open">OPEN FILE <ArrowUpRight size={15} /></span>
+            </a>
           ))}
         </div>
-        <p className="certificate-note">
-          CERTIFICATE FILES CAN BE CONNECTED TO EACH ITEM WHEN VERIFIED.
-        </p>
       </section>
 
-      <section className="contact section-shell" id="contact">
-        <div className="contact-overline">
-          <span className="status-dot" /> END OF TRANSMISSION? NOT YET.
-        </div>
-        <h2>
-          HAVE AN IDEA?
-          <span>LET'S BUILD IT.</span>
-        </h2>
-        <p>
-          Have a project, opportunity or interesting problem?
-          Let's connect and create something meaningful.
-        </p>
-
-        <a href="mailto:bathriprasathtk@gmail.com" className="contact-button">
-          INITIATE CONNECTION <ArrowUpRight size={19} />
-        </a>
-
-        <div className="contact-links">
-          <a href="https://github.com/bathriprasathtk-ui" target="_blank" rel="noreferrer">
-            <FaGithub size={18} /> GITHUB
-          </a>
-          <a href="https://www.linkedin.com/in/bathri-prasath-tk-b41b73377/" target="_blank" rel="noreferrer">
-            <FaLinkedin size={18} /> LINKEDIN
-          </a>
-          <a href="mailto:bathriprasathtk@gmail.com">
-            <Mail size={18} /> EMAIL
-          </a>
+      <section className="contact-section" id="contact">
+        <div className="contact-orbit"><div /><div /><div /></div>
+        <div className="contact-content">
+          <p className="micro-label"><Sparkles size={13} /> OPEN CHANNEL / 001</p>
+          <h2>Have a good<br /><span>problem to solve?</span></h2>
+          <p className="contact-copy">I'm always interested in thoughtful collaborations, ambitious ideas and meaningful engineering challenges.</p>
+          <a href="mailto:bathriprasathtk@gmail.com" className="contact-cta">START A CONVERSATION <ArrowUpRight size={17} /></a>
+          <div className="social-links">
+            <a href="https://github.com/bathriprasathtk-ui" target="_blank" rel="noreferrer"><Github size={16} /> GITHUB</a>
+            <a href="https://www.linkedin.com/in/bathri-prasath-tk-b41b73377/" target="_blank" rel="noreferrer"><Linkedin size={16} /> LINKEDIN</a>
+            <a href="mailto:bathriprasathtk@gmail.com"><Mail size={16} /> EMAIL</a>
+          </div>
         </div>
       </section>
 
-      <footer className="site-footer">
-        <a href="#home" className="footer-brand">BATHRI<span> / TK</span></a>
-        <span>DESIGNED TO THINK DIFFERENTLY.</span>
+      <footer className="wayne-footer">
+        <a href="#top" className="footer-mark">B<span>.</span>TK</a>
+        <span>BUILT WITH CURIOSITY. REFINED WITH INTENTION.</span>
         <span>© 2026 BATHRI PRASATH TK</span>
       </footer>
     </main>
